@@ -11,3 +11,4 @@ export const EDIT_MESSAGE = 'EDIT_MESSAGE';
 export const LIKE_MESSAGE = 'LIKE_MESSAGE';
 export const LOGIN = 'LOGIN';
 export const SIGNUP = 'SIGNUP';
+export const GET_USERS = 'GET_USERS';
