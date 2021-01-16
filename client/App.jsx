@@ -1,8 +1,11 @@
 import React from 'react';
+import Dashboard from './containers/Dashboard.jsx';
 
 const App = () => {
   return (
-    <div>React Success!!!</div>
+    <div>
+      <Dashboard />
+    </div>
   );
 };
 

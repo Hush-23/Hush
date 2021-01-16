@@ -2,6 +2,9 @@ import * as types from '../constants/actionTypes.js';
 
 const initialState = {
   // define state
+  username: 'matt',
+  outgoing: '',
+  outgoingTime: ''
 };
 
 const messageReducer = (state = initialState, action) => {
@@ -12,6 +15,8 @@ const messageReducer = (state = initialState, action) => {
 
     return {
       ...state,
+      outgoing: action.payload.message,
+      outgoingTime: action.payload.timestamp
     };
   }
   case types.DELETE_MESSAGE: {
