@@ -9,9 +9,9 @@
 import * as types from '../constants/actionTypes';
 
 
-export const initiateConversation = (initiateConversationPayload) => ({
+export const initiateConversation = (recipientEmail) => ({
   type: types.INITIATE_CONVERSATION,
-  payload: initiateConversationPayload
+  payload: recipientEmail
 });
 
 export const endConversation = (endConversationPayload) => ({
@@ -52,4 +52,9 @@ export const login = (userID) => ({
 export const signup = (userID) => ({
   type: types.SIGNUP,
   payloard: userID,
+});
+
+export const getUsers = (test) => ({
+  type: types.GET_USERS,
+  payload: test
 });
