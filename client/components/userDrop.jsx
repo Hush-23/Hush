@@ -6,11 +6,11 @@ const UserDrop = ({ userList, getUsers, initiateConversation }) => {
   const users = [];
   const [hidden, setHidden] = useState('none');
 
-  for (let i = 0; i < userList.length; i += 1) {
-    if (userList[i] !== undefined) {
-      users.push(<div key={i} onClick={(e) => console.log(e.target.attributes.value.value)} id='dropopt' value={userList[i].email}>{userList[i].name}</div>);
-    }
-  }
+  // for (let i = 0; i < userList.length; i += 1) {
+  //   if (userList[i] !== undefined) {
+  //     users.push(<div key={i} onClick={(e) => console.log(e.target.attributes.value.value)} id='dropopt' value={userList[i].email}>{userList[i].name}</div>);
+  //   }
+  // }
   function drop() {
     getUsers('test');
     // update hidden to false
@@ -36,10 +36,10 @@ const UserDrop = ({ userList, getUsers, initiateConversation }) => {
 
 const Dropdown = styled.div`
   display: ${props => props.hidden};
-  ${Dropdown}:hover & {
+  &:hover {
     background-color: black;
     cursor: pointer;
-  }
+  };
 `;
 
 export default UserDrop;
