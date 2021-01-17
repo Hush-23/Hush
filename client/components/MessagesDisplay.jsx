@@ -20,9 +20,9 @@ export default Message_Display;
 
 const Container = styled.div`
   position: fixed;
-  right: 0;
+  right: 20%;
   bottom: 1rem;
   height: 90%;
   width: 70%;
-  border: 1px solid black;
+  
 `;

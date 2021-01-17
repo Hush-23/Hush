@@ -57,7 +57,8 @@ const Post = styled.div`
   border-radius: 5px;
   background-color: #f7f7f7;
   height: 70%;
-  margin-left: 2rem;
+  margin-left: 1rem;
+  box-shadow: 1px 1px 1px lightgrey;
 `;
 
 const Form = styled.form`

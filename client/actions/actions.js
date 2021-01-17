@@ -54,7 +54,6 @@ export const signup = (userID) => ({
   payloard: userID,
 });
 
-export const getUsers = (test) => ({
+export const getUsers = () => ({
   type: types.GET_USERS,
-  payload: test
 });
