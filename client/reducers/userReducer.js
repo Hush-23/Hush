@@ -3,19 +3,23 @@ import * as types from '../constants/actionTypes';
 const initialState = {
   // define initial state
   userList: [],
+  username: '',
+  loggedIn: false
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-  case types.LOGIN: {
+  case types.LOGIN: {    
     return {
-      ...initialState,
+      ...state,
+      loggedIn: true
     };
   }
 
   case types.SIGNUP: {
     return {
-      ...initialState,
+      ...state,
+      loggedIn: true
     };
   }
 
@@ -25,7 +29,7 @@ const userReducer = (state = initialState, action) => {
     const userServerResponse = { users: [{name: 'Waye', email: 'weimpromptu@gmail.com'}, {name: 'Ian', email: 'ian.michael.garrett@gmail.com'}, {name: 'Matt', email: 'mattagreenberg1@gmail.com'}, {name: 'Ross', email: 'rrsarcona@gmail.com'}] };
     const userList = userServerResponse.users;
     return {
-      ...initialState,
+      ...state,
       userList,
     };
   }
@@ -36,7 +40,7 @@ const userReducer = (state = initialState, action) => {
     const userList = [...state.userList];
     console.log(action, userList);
     return {
-      ...initialState,
+      ...state,
       userList,
     };
   }

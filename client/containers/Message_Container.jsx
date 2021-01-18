@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import MessagesDisplay from '../components/MessagesDisplay.jsx';
 import { sendMessage, deleteMessage } from '../actions/actions';
 
+/**
+ * Maps dispatch to props & connects with MessagesDisplay component 
+ */
+
 const mapDispatchToProps = dispatch => ({
   sendMessage: (message, timestamp) => {
     dispatch(sendMessage({ message, timestamp }));

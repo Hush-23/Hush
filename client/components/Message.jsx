@@ -1,7 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
+/**
+ * Redners each individual message component 
+ * requires Author, timestamp, & message
+ * 
+ * Still need to make responsive & create logic to represent time
+ */
 const Message = (props) => {
 
   return (
@@ -29,9 +34,9 @@ const Container = styled.div`
   height: fit-content;
   width: 70%;
   margin-top: 1.2rem;
-
+  overflow-wrap: break-word;
   &:hover {
-    background-color: #f5f0f0;
+    background-color: #fcf7fa;
   }
 `;
 
