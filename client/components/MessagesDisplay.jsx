@@ -9,11 +9,11 @@ import Messages from './Messages.jsx';
  * Consists of messages and input to send messages
  */
 
-const Message_Display = (props) => {
+const Message_Display = ({ activeChat, sendMessage, activeConversations }) => {
   return (
     <Container>
-      <Messages />
-      <SendMessage dispatch={props.sendMessage} />
+      <Messages activeChat={activeChat} />
+      <SendMessage dispatch={sendMessage} />
     </Container>
   );
 };

@@ -17,4 +17,6 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export const Message_Container = connect(() => ({}), mapDispatchToProps)(MessagesDisplay);
+export const Message_Container = connect(state => ({
+  activeChat: state.user.activeChat
+}), mapDispatchToProps)(MessagesDisplay);

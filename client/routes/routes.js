@@ -1,5 +1,5 @@
 import { Login_Container } from '../containers/Login_Container.js';
-import Dashboard from '../containers/Dashboard.jsx';
+import { Dashboard_Container } from '../containers/Dashboard_Container.js';
 
 /**
  * Routes used in App component
@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: '/dashboard',
-    component: Dashboard
+    component: Dashboard_Container
   }
 ];
 

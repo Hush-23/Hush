@@ -69,17 +69,19 @@ const Login = ({ login, signup, history }) => {
         const response = await request.json();
         if (response.verified) {
           // Set state in redux store to logged in
-          login(true);
+          console.log(email.value);
+          login(email.value);
           history.push('/dashboard');
         } else {
           setErrorMessage(errorMessages[status.toString()]);
         }
+        email.value = '';
+        password.value = '';
       } catch (err) {
         console.log(err);
       }
     })();
-    email.value = '';
-    password.value = '';
+    
   };
 
   // variables where input values are held

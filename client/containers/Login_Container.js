@@ -7,11 +7,11 @@ import { login, signup } from '../actions/actions';
  */
 
 const mapDispatchToProps = dispatch => ({
-  login: (email, password) => {
-    dispatch(login({ email, password }));
+  login: (email) => {
+    dispatch(login(email));
   },
-  signup: (email, username, password) => {
-    dispatch(signup({ email, username, password }));
+  signup: (email) => {
+    dispatch(signup(email));
   }
 });
 

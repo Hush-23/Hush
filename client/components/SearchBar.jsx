@@ -19,6 +19,11 @@ const SearchBar = ({ open, handleClick }) => {
     setSearchTerm(event.target.value);
   };
 
+  const handleClickUser = (e) => {
+    console.log(e);
+    // 
+  };
+
   /**
    * invoked on update to searchTerm state
    * gets current users from db and renders results based on input
@@ -64,7 +69,7 @@ const SearchBar = ({ open, handleClick }) => {
       <Results open={open} >
         <ul>
           {searchResults.map(item => (
-            <User>{item}</User>
+            <User onClick={handleClickUser}>{item}</User>
           ))}
         </ul>
       </Results>
