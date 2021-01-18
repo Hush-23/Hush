@@ -12,11 +12,11 @@ const Message = (props) => {
   return (
     <Container>
       <Author>
-        <Username  user={props.user}>username</Username>
-        <Time_Sent>12:00PM</Time_Sent>
+        <Username  user={props.user}>{props.sender}</Username>
+        <Time_Sent>{props.timeStamp}</Time_Sent>
       </Author>
       <Post>
-        This is a test message what do I look like on the big screen boss? Am I rendering correctly? Oh cool looks Like I am. I exist to serve you sir. Anyhting else I can help out with today?
+        {props.message}
       </Post>
     </Container>
   );

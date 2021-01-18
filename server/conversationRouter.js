@@ -9,11 +9,11 @@ const conversationRouter = express.Router();
 
 // Get a conversation from the database
 // localhost://3000/conversation/"username"
-conversationRouter.get('/convo',
-conversationController.findConversation,
-(req, res) => {
+conversationRouter.post('/convo',
+  conversationController.findConversation,
+  (req, res) => {
     res.status(res.locals.status).json({cid: res.locals.convoId, conversation: res.locals.messages});
-})
+  });
 
 // Append to a conversation
 // localhost://3000/conversation/"username"
