@@ -6,8 +6,9 @@ const initialState = {
   username: '',
   loggedIn: false,
   email: '',
-  activeChat: {cid: '', messages: []},
-  activeConversations: []
+  activeChat: {cid: '', conversation: []},
+  activeConversations: [],
+  activesLoaded: false
 };
 
 const userReducer = (state = initialState, action) => {
@@ -30,7 +31,7 @@ const userReducer = (state = initialState, action) => {
 
   case types.GET_USERS: {
     // fetch '/user/getusers' response should look similar to userServerResponse
-    console.log(action.payload);
+    // console.log(action.payload);
     const userServerResponse = { users: [{name: 'Waye', email: 'weimpromptu@gmail.com'}, {name: 'Ian', email: 'ian.michael.garrett@gmail.com'}, {name: 'Matt', email: 'mattagreenberg1@gmail.com'}, {name: 'Ross', email: 'rrsarcona@gmail.com'}] };
     const userList = userServerResponse.users;
     return {
@@ -43,7 +44,7 @@ const userReducer = (state = initialState, action) => {
     // send curUserEmail & action.payload (recipientEmail) to server route '/chat'
     const convServerResponse = {convId: '1', messages: []};
     const userList = [...state.userList];
-    console.log(action, userList);
+    // console.log(action, userList);
     return {
       ...state,
       userList,
@@ -53,7 +54,7 @@ const userReducer = (state = initialState, action) => {
   case types.SET_ACTIVE_CHAT: {
     // action payload is an object of {cID, [users], [messages]}
     const activeChat = action.payload;
-    console.log('user reducer payload:', action.payload);
+    // console.log('user reducer payload:', action.payload);
     return {
       ...state,
       activeChat,
@@ -64,6 +65,13 @@ const userReducer = (state = initialState, action) => {
     return {
       ...state,
       activeConversations: action.payload
+    };
+  }
+
+  case types.SET_ACTIVES_LOADED: {
+    return {
+      ...state,
+      activesLoaded: true,
     };
   }
   default:

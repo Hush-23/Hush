@@ -67,3 +67,7 @@ export const setActiveConversations = (activeConversationPayload) => ({
   type: types.SET_ACTIVE_CONVERSATIONS,
   payload: activeConversationPayload
 });
+
+export const setActivesLoaded = () => ({
+  type: types.SET_ACTIVES_LOADED,
+});

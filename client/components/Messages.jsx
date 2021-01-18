@@ -13,11 +13,11 @@ const Messages = ({ activeChat }) => {
    */
   // currently send is email, need to map emails to usernames
   // could store send name as variable to push as component prop 
-  const { messages } = activeChat;
+  const { conversation } = activeChat;
   const chat = [];
-  if (messages.length > 0) {
-    for (let i = 0; i < messages.length; i += 1) {
-      chat.push(<Message key={i} sender={messages[i].sender} message={messages[i].text} timeStamp={messages[i].timestamp} />);
+  if (conversation.length > 0) {
+    for (let i = 0; i < conversation.length; i += 1) {
+      chat.push(<Message key={i} sender={conversation[i].sender} message={conversation[i].text} timeStamp={conversation[i].timestamp} />);
     }
   }
 
