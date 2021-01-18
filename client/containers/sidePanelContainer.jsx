@@ -8,9 +8,7 @@ const mapDispatchToProps = dispatch => ({
   },
   initiateConversation: (email) => {
     dispatch(initiateConversation(email));
-  }
-    
-  
+  } 
 });
 
 export const SidePanelContainer = connect((state) => ({userList: state.user.userList}), mapDispatchToProps)(Sidepanel);

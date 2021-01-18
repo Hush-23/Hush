@@ -1,41 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const SearchBar = (props) => {
+const SearchBar = ({ open, handleClick }) => {
 
-  const people = [
-    'Wei',
-    'Matt',
-    'Ross', 
-    'Ian'
-  ];
+  // variable where all users in Results component will be held
+  let users;
+
+  /**
+   * Set state
+   * searchTerm holds state for current value in search input field
+   * searchResults holds an array of user emails from getUsers server request
+   *  open holds state that determines wether or not results component should be displayed - passed as prop into Results styled-component
+   */
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [results, setResults] = useState(false);
+  
   const handleChange = event => {
     setSearchTerm(event.target.value);
   };
 
-  const handleClick = event => {
-    setResults(true);
-  };
-
+  /**
+   * invoked on update to searchTerm state
+   * gets current users from db and renders results based on input
+   * Can this be improved by handling request once elsewhere?
+   */
 
   useEffect(() => {
-    const results = people.filter(person =>  person.toLowerCase().includes(searchTerm));
-    setSearchResults(results);
+    // Define fetch request options
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    /**
+     * immediately invoked Async function
+     * makes request to server for all users in db
+     * renders user emails in Results component based on input in search field
+     */
+
+    try {
+      (async () => {
+        const request = await fetch('/user/getUsers', requestOptions);
+        const response = await request.json();
+        users = await response.users;
+        const results = users.filter(user =>  user.toLowerCase().includes(searchTerm));
+        setSearchResults(results);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
   }, [searchTerm]);
 
   return (
-    <Container>
+    <Container onClick={(e) => handleClick(e)}>
       <Input 
+        id='input'
         type='text' 
-        placeholder='Search users'
+        placeholder='Search users...'
         value={searchTerm}
         onChange={handleChange}
-        onClick={handleClick}
+        onClick={(e) => handleClick(e)}
       />
-      <Results results={results} >
+      <Results open={open} >
         <ul>
           {searchResults.map(item => (
             <User>{item}</User>
@@ -57,7 +83,7 @@ const Container = styled.div`
     height: 15%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
  `;
 
 const Input = styled.input`
@@ -66,7 +92,9 @@ const Input = styled.input`
   border-radius: 5px;
   box-shadow: none;
   border: 1px solid #616161;
-  text-indent: 1rem;
+  text-indent: .5rem;
+  margin-left: 1rem;
+  flex-shrink: 0;
 `;
 
 const Results = styled.div`
@@ -79,14 +107,16 @@ const Results = styled.div`
   border: 1px solid #616161;
   border-radius: 5px;
   border-top: none;
-  display: ${props => props.results ? 'block' : 'none'};
+  display: ${props => props.open ? 'block' : 'none'};
   scrollbar-width: none;
   z-index: 5;
+  margin-left: 1rem;
+  background-color: white;
 
   &::-webkit-scrollbar {
     -webkit-appearance: none;
   }
-  background-color: white;
+  
 `;
 
 const User = styled.li`

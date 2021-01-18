@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { SidePanelContainer } from './sidePanelContainer.jsx';
 import { Message_Container } from './Message_Container.jsx';
-import Sidepanel from '../components/Sidepanel.jsx';
+
+/**
+ * 
+ * Main page for authenticated user
+ * Renders Sidepanel_Container & Message_Container Components
+ * How can we redirect to login on unsuccessfull verification?
+ */
 
 const Dashboard = (props) => {
+
+  // useEffect((state) => {
+  //   if (!state.loggedIn) history.push('/login');
+  // });
+
   return (
     <Container>
       {/* <SidePanelContainer /> */}

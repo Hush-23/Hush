@@ -11,9 +11,13 @@ const PORT = 3000;
 
 //express ---------
 // app.use('/build', express.static(path.join(__dirname, '../build')));
-app.use(express.json())
+app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/dashboard', (req, res) => {
+  res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
+app.get('/login', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
 });
 
@@ -35,7 +39,7 @@ app.use((err, req, res, next) => {
   const defaultError = {
     message: 'Undefinded/Uncaught Error in server',
     error: 'No Error Caught'
-  }
+  };
 
   const customError = Object.assign({}, defaultError, err);
 

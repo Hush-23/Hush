@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+/**
+ * Renders current user details for sidebar
+ * avatar & username
+ */
+
 const UserDetails = (props) => {
   return (
     <Container>

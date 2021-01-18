@@ -1,11 +1,22 @@
 import React from 'react';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Dashboard from './containers/Dashboard.jsx';
+import routes from './routes/routes.js';
+
 
 const App = () => {
   return (
-    <div>
-      <Dashboard />
-    </div>
+    <Router>
+      <Switch>
+        {routes.map((route) => (
+          <Route 
+            key={route.path}
+            path={route.path}
+            component={route.component}
+          />
+        ))}
+      </Switch>
+    </Router>
   );
 };
 
