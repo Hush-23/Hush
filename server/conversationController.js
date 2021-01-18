@@ -61,7 +61,27 @@ const ConversationController = {
       return next();
       })
     })
+  },
+
+  getAllConvosForAUser (req, res, next) {
+    const { username } = req.body; 
+    
+    Conversation.find({participants: { name: username } })
+    .then( (mongoResult) => {
+      if (mongoResult.length === 0){
+        console.log(mongoResult);
+        res.locals.conversations = [];
+        res.locals.status = 204;
+        return next();
+      } else {
+        console.log(mongoResult);
+        res.locals.conversations = mongoResult;
+        res.locals.status = 200;
+        return next();
+      }
+    })
   }
+
 }
 
 

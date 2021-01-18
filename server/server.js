@@ -78,38 +78,22 @@ socket.on('connection', (uniqueClientConnect) => {
   //---------------listeners---------------
   socket.on('defineClient', (clientInfo) => {
     const client  = JSON.parse(clientInfo);
-    const email = client.email;
-    socketIdPhoneBook[email] = uniqueClientConnect.id;
+    const username = client.username;
+    socketIdPhoneBook[username] = uniqueClientConnect.id;
   });
 
 
-
-  /*message shape from client = {
-    CID: GHE*&VE%CVJEV
-    sender: 'matt@gmail.com',
-    recipient: 'ross@aol.com',
-    text: "Yo man how are you?"
-  }
-
-  */
-         /*
-        messageObject = {
-          sender:
-          recipient:
-          body: 
-          timestamp: 
-        }
-        */
   socket.on('directMessage', (messageObj) => {
-    const { CID, sender, recipient, text,  timestamp } = messageObj; //from client -> server
+    const { CID, sender, recipient, text, timestamp} = messageObj; //from client -> server
     let recipientSocketId = socketIdPhoneBook[recipient]; //socket it for recipient
 
     const newMessage = {
       sender,
       recipient,
       text,
-      timestamp
+      timestamp : 'get timestamp function'
     };
+
     //doing findOneAndUpdate twice because we may need to add different features. we will see...
     if (!recipientSocketId){ //just add to the database there is no live recipient
       Conversation.findOneAndUpdate({_id: CID}, { $push: {messages: newMessage}}, {new: true})
@@ -119,15 +103,14 @@ socket.on('connection', (uniqueClientConnect) => {
     } else {//there is a live socket to route to
       Conversation.findOneAndUpdate({_id: CID}, { $push: {messages: newMessage}}, {new: true})
       .then( () => {
-        uniqueClientConnect.to(recipientID).emit('private', newMessage);
+        uniqueClientConnect.to(recipientID).emit('outGoingDM', JSON.stringify(newMessage));
       })
     }
   })
 
 
-  
 
-  
+
 })
 
 
