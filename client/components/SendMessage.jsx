@@ -65,6 +65,7 @@ const Form = styled.form`
   display: flex;
   height: 50%;
   width: 90%;
+  
 `;
 
 const Send_Btn = styled.div`
@@ -77,4 +78,8 @@ const Send_Btn = styled.div`
 const Input = styled.input`
   border: none;
   background-color: #f7f7f7;
+  
+  &:focus {
+    outline: none;
+  }
 `;
