@@ -15,6 +15,12 @@ conversationRouter.post('/convo',
     res.status(res.locals.status).json({cid: res.locals.convoId, conversation: res.locals.messages});
   });
 
+conversationRouter.get('/userconvos',
+  conversationController.getAllConvosForAUser,
+  (req, res) => {
+      res.status(res.locals.status).json({conversations : res.locals.conversations});
+  })
+
 // Append to a conversation
 // localhost://3000/conversation/"username"
 
