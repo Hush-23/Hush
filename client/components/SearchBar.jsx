@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const SearchBar = ({ open, handleClick }) => {
+const SearchBar = ({ open, handleClick, activeConversations, setActiveChat, setActiveConversations, email }) => {
 
   // variable where all users in Results component will be held
   let users;
@@ -20,8 +20,34 @@ const SearchBar = ({ open, handleClick }) => {
   };
 
   const handleClickUser = (e) => {
-    console.log(e);
-    // 
+    console.log('event', e.target.innerText);
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        // "sender" is taken from user state
+        sender: email,
+        // recipient taken from activeConversations email property === e.target.email
+        recipient: e.target.innerText
+      })
+    };
+
+    /**
+     * immediately invoked Async function
+     * makes request to server for conversation object using username
+     */
+
+    try {
+      (async () => {
+        const request = await fetch('/chat/convo', requestOptions);
+        const response = await request.json();
+        setActiveConversations([...activeConversations, e.target.innerText]);
+        setActiveChat(response);
+        
+      })();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   /**
@@ -48,6 +74,8 @@ const SearchBar = ({ open, handleClick }) => {
         const request = await fetch('/user/getUsers', requestOptions);
         const response = await request.json();
         users = await response.users;
+        // filter out users that appear in activeConversations
+        users =  await users.filter((user) => !activeConversations.includes(user));
         const results = users.filter(user =>  user.toLowerCase().includes(searchTerm));
         setSearchResults(results);
       })();
@@ -69,7 +97,7 @@ const SearchBar = ({ open, handleClick }) => {
       <Results open={open} >
         <ul>
           {searchResults.map(item => (
-            <User onClick={handleClickUser}>{item}</User>
+            <User email={item} onClick={(e) => handleClickUser(e)}>{item}</User>
           ))}
         </ul>
       </Results>

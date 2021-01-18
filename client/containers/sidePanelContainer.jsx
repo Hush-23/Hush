@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export const SidePanelContainer = connect((state) => ({userList: state.user.userList, activeChat: state.user.activeChat}), mapDispatchToProps)(Sidepanel);
+export const SidePanelContainer = connect((state) => ({activeConversations: state.user.activeConversations, activeChat: state.user.activeChat}), mapDispatchToProps)(Sidepanel);

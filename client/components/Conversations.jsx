@@ -5,7 +5,7 @@ import styled from 'styled-components';
  * Renders active conversations to sidepanel
  */
 
-const Conversations = ({ setActiveChat, activeConversations, email }) => {
+const Conversations = ({ activesLoaded, setActivesLoaded, setActiveChat, activeConversations, setActiveConversations, email }) => {
 
   /**
    * Set state
@@ -17,21 +17,26 @@ const Conversations = ({ setActiveChat, activeConversations, email }) => {
 
 
 
-  // Make request for all active conversations, set default
+
+  // Make request for all active conversations
   // pass active email to messages component
   useEffect(() => {
     (async () => {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username:  'ian.michael.garrett@gmail.com'})
+        body: JSON.stringify({ username: email})
       };
 
       try {
         const request = await fetch('/chat/userconvos', requestOptions);
-        // const status = await request.status;
         const response = await request.json();
-        console.log('conversations response', response);
+        setActiveConversations(
+          response.conversations.map(convo => {
+            const temp = convo.participants.filter(user => user.name !== email);
+            return temp[0].name;
+          })
+        );
       } catch (err) {
         console.log(err);
       }
@@ -50,15 +55,16 @@ const Conversations = ({ setActiveChat, activeConversations, email }) => {
     else setGroupOpen(true);
   };
 
+  // 
   const handleUserClick = (e) => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         // "sender" is taken from user state
-        sender: 'ian@ian.com',
+        sender: email,
         // recipient taken from activeConversations email property === e.target.email
-        recipient: 'asdfsdfsdf'
+        recipient: e.target.innerText
       })
     };
 
@@ -78,6 +84,7 @@ const Conversations = ({ setActiveChat, activeConversations, email }) => {
     }
   };
 
+  let actives;
 
   return (
     <Container>
@@ -85,8 +92,9 @@ const Conversations = ({ setActiveChat, activeConversations, email }) => {
       <Ul>
         <li><DirectCaret onClick={(e) => handleDirectClick(e)} open={directOpen} >Direct</DirectCaret>
           <InnerList open={directOpen} >
-            <Direct email="from activeConversations email property" onClick={(e) => handleUserClick(e)}>Wei</Direct>
-            <Direct>Ian</Direct>
+            {activeConversations.map((user, i) => (
+              <Direct key={`${user}${i}`} email={user} onClick={(e) => handleUserClick(e)}>{user}</Direct>
+            ))}
           </InnerList>
         </li>
         <li><GroupCaret onClick={(e) => handleGroupClick(e)} open={groupOpen} >Groups</GroupCaret></li>

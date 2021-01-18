@@ -64,8 +64,9 @@ const Login = ({ login, signup, history }) => {
 
     (async () => {
       try {
+        console.log('email', email);
         const request = await fetch('/user/verify', requestOptions);
-        const status = await request.status;
+        const status = request.status;
         const response = await request.json();
         if (response.verified) {
           // Set state in redux store to logged in
