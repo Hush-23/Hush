@@ -3,6 +3,12 @@ import styled from 'styled-components';
 import SendMessage from './SendMessage.jsx';
 import Messages from './Messages.jsx';
 
+
+/**
+ * Renders chat box to dashboard
+ * Consists of messages and input to send messages
+ */
+
 const Message_Display = (props) => {
   return (
     <Container>

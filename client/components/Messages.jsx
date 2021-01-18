@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import Message from './Message.jsx';
 
+
+/**
+ * Renders all individual Message components
+ */
 const Messages = (props) => {
   /**
    * GET all messages from db here
@@ -51,6 +55,10 @@ const Messages = (props) => {
 };
 
 export default Messages;
+
+/**
+ * Styled Components
+ */
 
 const Container = styled.div`
   display: flex;
