@@ -1,4 +1,11 @@
-const clientSocket = io.connect('http://localhost:3000') 
+
+
+let clientSocket;
+
+const connectToSocket = () => {
+    console.log('connecting to socket')
+    clientSocket = io.connect('http://localhost:3000') 
+}
 //connects to the socket 'portion' of our server
 //invoke when sign in 
 
@@ -6,7 +13,7 @@ const clientSocket = io.connect('http://localhost:3000')
 const username // ^
 
 clientSocket.on('outGoingDM', (incomingMessage) => {
-    console.log('receivedd a message');
+    console.log('received a message');
     let incomingMessageObj = JSON.parse(incomingMessage);
     //up to front end how they want to render that message ...
     let {CID, sender, recipient, text, timestamp} = incomingMessageObj;
@@ -15,7 +22,6 @@ clientSocket.on('outGoingDM', (incomingMessage) => {
 
 
 /* EMITER FUNCTIONS BELOW */ 
-
 
 const sendDM = (cid, sender, recipient, text) => {
     console.log('sending a dm');
@@ -35,3 +41,8 @@ const defineMe = (username) => { //pass in this.state.username
     clientSocket.emit( 'defineClient' , `{"username":"${username}" }`);
 }
 
+const disconnectFromSocket = (username) => { //pass in this.state.username
+    console.log('disconnecting  From  Socket');
+    clientSocket.emit( 'disconnect' , `${username}`);
+    clientSocket.disconnect();
+}

@@ -68,22 +68,21 @@ const socket = require('socket.io')(server)  //this binds socket to the express 
 socket.on('connection') listens for a connection. each connection event happens with a unique client.
 by default our client will emit a "defineClient" event that will carry with it an email.
 */
+//operator 
 
 const socketIdPhoneBook = {};
 const Conversation = models.Conversation;
 
-
-
 socket.on('connection', (uniqueClientConnect) => {
   //---------------listeners---------------
-  socket.on('defineClient', (clientInfo) => {
+  uniqueClientConnect.on('defineClient', (clientInfo) => {
     const client  = JSON.parse(clientInfo);
     const username = client.username;
     socketIdPhoneBook[username] = uniqueClientConnect.id;
   });
 
 
-  socket.on('directMessage', (messageObj) => {
+  uniqueClientConnect.on('directMessage', (messageObj) => {
     const { CID, sender, recipient, text, timestamp} = messageObj; //from client -> server
     let recipientSocketId = socketIdPhoneBook[recipient]; //socket it for recipient
 
@@ -106,6 +105,11 @@ socket.on('connection', (uniqueClientConnect) => {
         uniqueClientConnect.to(recipientID).emit('outGoingDM', JSON.stringify(newMessage));
       })
     }
+  })
+
+  uniqueClientConnect.on('disconnect', (username) => {
+    delete socketIdPhoneBook[username];
+    //uniqueClientConnect.disconnect(true) MAYBE socket.disconnect(true);
   })
 
 
