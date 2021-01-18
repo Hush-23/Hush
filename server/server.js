@@ -85,12 +85,13 @@ socket.on('connection', (uniqueClientConnect) => {
   uniqueClientConnect.on('directMessage', (messageObj) => {
     const { CID, sender, recipient, text, timestamp} = messageObj; //from client -> server
     let recipientSocketId = socketIdPhoneBook[recipient]; //socket it for recipient
-
+    let date = new Date()
+    let dateInSeconds = Date.parse(date);
     const newMessage = {
       sender,
       recipient,
       text,
-      timestamp : 'get timestamp function'
+      timestamp : dateInSeconds
     };
 
     //doing findOneAndUpdate twice because we may need to add different features. we will see...
@@ -111,9 +112,6 @@ socket.on('connection', (uniqueClientConnect) => {
     delete socketIdPhoneBook[username];
     //uniqueClientConnect.disconnect(true) MAYBE socket.disconnect(true);
   })
-
-
-
 
 })
 

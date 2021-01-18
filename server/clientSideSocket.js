@@ -18,6 +18,9 @@ clientSocket.on('outGoingDM', (incomingMessage) => {
     //up to front end how they want to render that message ...
     let {CID, sender, recipient, text, timestamp} = incomingMessageObj;
     console.log(text)
+
+    //this.state.liveMessages = []
+    //this.state.liveMessages.push(incomingMessagesObj)
 })
 
 
