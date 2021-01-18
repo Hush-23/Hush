@@ -12,7 +12,7 @@ const conversationRouter = express.Router();
 conversationRouter.get('/convo',
 conversationController.findConversation,
 (req, res) => {
-    res.status(res.locals.status).json({cid: res.locals.convoId, conversation: res.locals.messages});
+    res.status(res.locals.status).json({cid: res.locals.convoId, messages: res.locals.messages});
 })
 
 // Append to a conversation

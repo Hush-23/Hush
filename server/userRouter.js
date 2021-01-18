@@ -18,7 +18,7 @@ userRouter.get('/getUsers',
 )
 
 
-userRouter.get('/verify',
+userRouter.post('/verify',
     userController.verifyUser,
     (req, res) => {
       res.status(res.locals.status).json({verified: res.locals.verified});
