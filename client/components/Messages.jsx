@@ -6,50 +6,24 @@ import Message from './Message.jsx';
 /**
  * Renders all individual Message components
  */
-const Messages = (props) => {
+const Messages = ({ activeChat }) => {
   /**
    * GET all messages from db here
    * create array of Message components passing in details form each message in response
    */
+  // currently send is email, need to map emails to usernames
+  // could store send name as variable to push as component prop 
+  const { messages } = activeChat;
+  const chat = [];
+  if (messages.length > 0) {
+    for (let i = 0; i < messages.length; i += 1) {
+      chat.push(<Message key={i} sender={messages[i].sender} message={messages[i].text} timeStamp={messages[i].timestamp} />);
+    }
+  }
 
   return (
     <Container>
-      <Message user='#e91e63' />
-      <Message user='#9c27b0' />
-      <Message user='#e91e63' />
-      <Message user='#2196f3' />
-      <Message user='#e91e63' />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
+      {chat}
     </Container>
   );
 };

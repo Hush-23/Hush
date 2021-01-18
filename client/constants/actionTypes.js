@@ -12,3 +12,5 @@ export const LIKE_MESSAGE = 'LIKE_MESSAGE';
 export const LOGIN = 'LOGIN';
 export const SIGNUP = 'SIGNUP';
 export const GET_USERS = 'GET_USERS';
+export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
+export const SET_ACTIVE_CONVERSATIONS = 'SET_ACTIVE_CONVERSATIONS';

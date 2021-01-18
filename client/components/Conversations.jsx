@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 /**
  * Renders active conversations to sidepanel
  */
 
-const Conversations = (props) => {
+const Conversations = ({ setActiveChat, activeConversations, email }) => {
 
   /**
    * Set state
@@ -14,6 +14,29 @@ const Conversations = (props) => {
    */
   const [directOpen, setDirectOpen] = useState(true);
   const [groupOpen, setGroupOpen] = useState(true);
+
+
+
+  // Make request for all active conversations, set default
+  // pass active email to messages component
+  useEffect(() => {
+    (async () => {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username:  'ian.michael.garrett@gmail.com'})
+      };
+
+      try {
+        const request = await fetch('/chat/userconvos', requestOptions);
+        // const status = await request.status;
+        const response = await request.json();
+        console.log('conversations response', response);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
 
   // handles click of direct caret
   const handleDirectClick = (e) => {
@@ -27,6 +50,34 @@ const Conversations = (props) => {
     else setGroupOpen(true);
   };
 
+  const handleUserClick = (e) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        // "sender" is taken from user state
+        sender: 'ian@ian.com',
+        // recipient taken from activeConversations email property === e.target.email
+        recipient: 'asdfsdfsdf'
+      })
+    };
+
+    /**
+     * immediately invoked Async function
+     * makes request to server for conversation object using username
+     */
+
+    try {
+      (async () => {
+        const request = await fetch('/chat/convo', requestOptions);
+        const response = await request.json();
+        setActiveChat(response);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   return (
     <Container>
@@ -34,7 +85,7 @@ const Conversations = (props) => {
       <Ul>
         <li><DirectCaret onClick={(e) => handleDirectClick(e)} open={directOpen} >Direct</DirectCaret>
           <InnerList open={directOpen} >
-            <Direct>Wei</Direct>
+            <Direct email="from activeConversations email property" onClick={(e) => handleUserClick(e)}>Wei</Direct>
             <Direct>Ian</Direct>
           </InnerList>
         </li>

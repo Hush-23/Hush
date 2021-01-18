@@ -57,3 +57,13 @@ export const signup = (userID) => ({
 export const getUsers = () => ({
   type: types.GET_USERS,
 });
+
+export const setActiveChat = (messages) => ({
+  type: types.SET_ACTIVE_CHAT,
+  payload: messages,
+});
+
+export const setActiveConversations = (activeConversationPayload) => ({
+  type: types.SET_ACTIVE_CONVERSATIONS,
+  payload: activeConversationPayload
+});

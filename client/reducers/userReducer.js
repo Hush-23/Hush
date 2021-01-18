@@ -4,22 +4,27 @@ const initialState = {
   // define initial state
   userList: [],
   username: '',
-  loggedIn: false
+  loggedIn: false,
+  email: '',
+  activeChat: {cid: '', messages: []},
+  activeConversations: []
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-  case types.LOGIN: {    
+  case types.LOGIN: {  
     return {
       ...state,
-      loggedIn: true
+      loggedIn: true,
+      email: action.payload
     };
   }
 
   case types.SIGNUP: {
     return {
       ...state,
-      loggedIn: true
+      loggedIn: true,
+      email: action.payload
     };
   }
 
@@ -42,6 +47,23 @@ const userReducer = (state = initialState, action) => {
     return {
       ...state,
       userList,
+    };
+  }
+
+  case types.SET_ACTIVE_CHAT: {
+    // action payload is an object of {cID, [users], [messages]}
+    const activeChat = action.payload;
+    console.log('user reducer payload:', action.payload);
+    return {
+      ...state,
+      activeChat,
+    };
+  }
+
+  case types.SET_ACTIVE_CONVERSATIONS: {
+    return {
+      ...state,
+      activeConversations: action.payload
     };
   }
   default:
