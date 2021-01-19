@@ -10,7 +10,7 @@ const connectToSocket = () => {
 //invoke when sign in 
 
 //const username = this.state.username this is an example.
-const username // ^
+
 
 clientSocket.on('outGoingDM', (incomingMessage) => {
     console.log('received a message');
@@ -18,13 +18,10 @@ clientSocket.on('outGoingDM', (incomingMessage) => {
     //up to front end how they want to render that message ...
     let {CID, sender, recipient, text, timestamp} = incomingMessageObj;
     console.log(text)
-
-    //this.state.liveMessages = []
-    //this.state.liveMessages.push(incomingMessagesObj)
 })
 
 
-/* EMITER FUNCTIONS BELOW */ 
+/* DM EMITER FUNCTIONS BELOW */ 
 
 const sendDM = (cid, sender, recipient, text) => {
     console.log('sending a dm');
@@ -36,14 +33,18 @@ const sendDM = (cid, sender, recipient, text) => {
     directMessage[text] = text
     directMessage[timestamp] = 'will be done on server'
     clientSocket.emit( 'directMessage', JSON.stringify(directMessage));
-} 
+}
 
+
+
+/* ClIENT-SERVER PING EMITER FUNCTIONS BELOW */ 
 
 const defineMe = (username) => { //pass in this.state.username
     console.log('sending my name to server');
     clientSocket.emit( 'defineClient' , `{"username":"${username}" }`);
 }
 
+/* CLIENT SOCKET DISCONNECT FUNCTION BELOW */
 const disconnectFromSocket = (username) => { //pass in this.state.username
     console.log('disconnecting  From  Socket');
     clientSocket.emit( 'disconnect' , `${username}`);

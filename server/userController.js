@@ -7,11 +7,9 @@ const userController = {};
 
 userController.getUsers = (req, res, next) => {
   const currentUser = req.body.username;
-  console.log(currentUser);
   const usernames = [];
   User.find({})
     .then( (mongoRes) => {
-      console.log(mongoRes);
       if (!mongoRes.length) {
         res.locals.users = usernames;
         res.locals.status = 201;
@@ -30,10 +28,8 @@ userController.getUsers = (req, res, next) => {
 userController.createUser = (req, res, next) => {
   //use email as username
   const {name, password, username} = req.body;
-  console.log('name: ', name, 'username: ', username, 'password: ', password);
   //hashing password
   const hash = bcrypt.hashSync(password, 8);
-  console.log('bcryptpassword: ', hash);
        
   User.create({name: name, password: hash, username: username})
     .then(() => {

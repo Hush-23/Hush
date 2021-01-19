@@ -7,16 +7,17 @@ import styled from 'styled-components';
  * 
  * Still need to make responsive & create logic to represent time
  */
-const Message = (props) => {
-
+const Message = ({  color, sender, timeStamp, message }) => {
+  const dateOptions = {weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric'};
+  const formattedDate = new Date(timeStamp).toLocaleDateString('en-US', dateOptions);
   return (
     <Container>
       <Author>
-        <Username  user={props.user}>{props.sender}</Username>
-        <Time_Sent>{props.timeStamp}</Time_Sent>
+        <Username  color={color}>{sender}</Username>
+        <Time_Sent>{formattedDate}</Time_Sent>
       </Author>
       <Post>
-        {props.message}
+        {message}
       </Post>
     </Container>
   );
@@ -49,7 +50,7 @@ const Author = styled.div`
 
 const Username = styled.p`
   font-size: 1.1rem;
-  color: ${props => props.user};
+  color: ${props => props.color};
 `;
 
 const Time_Sent = styled.p`

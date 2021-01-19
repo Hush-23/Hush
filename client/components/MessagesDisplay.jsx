@@ -9,11 +9,21 @@ import Messages from './Messages.jsx';
  * Consists of messages and input to send messages
  */
 
-const Message_Display = ({ activeChat, sendMessage, activeConversations }) => {
+const Message_Display = ({ activeChat, sendMessage, activeConversations, email, activeRecipient, clientSocket, addNewMessage }) => {
   return (
     <Container>
-      <Messages activeChat={activeChat} />
-      <SendMessage dispatch={sendMessage} />
+      <Messages
+        email={email}
+        activeChat={activeChat}
+      />
+      <SendMessage
+        addNewMessage={addNewMessage}
+        clientSocket={clientSocket}
+        activeRecipient={activeRecipient}
+        email={email}
+        activeChat={activeChat}
+        dispatch={sendMessage}
+      />
     </Container>
   );
 };
@@ -26,9 +36,9 @@ export default Message_Display;
 
 const Container = styled.div`
   position: fixed;
-  right: 20%;
+  left: 15rem;
   bottom: 1rem;
-  height: 90%;
+  height: 80%;
   width: 70%;
   
 `;

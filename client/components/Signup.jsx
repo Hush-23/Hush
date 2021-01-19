@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const Signup = ({ signup, history, open , handleSignupClose}) => {
+const Signup = ({ signup, history, open, handleSignupClose }) => {
 
   /**
    * Set state 
@@ -17,7 +17,7 @@ const Signup = ({ signup, history, open , handleSignupClose}) => {
     // Define fetch request options
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: email.value, password: password.value, name: username.value })
     };
 
@@ -51,7 +51,7 @@ const Signup = ({ signup, history, open , handleSignupClose}) => {
       }
     })();
     email.value = '';
-    username.value= '';
+    username.value = '';
     password.value = '';
   };
 
@@ -68,10 +68,25 @@ const Signup = ({ signup, history, open , handleSignupClose}) => {
       <Header>Create an account</Header>
       <ErrorMessage>{errorMessage}</ErrorMessage>
       <Form onSubmit={(e) => handleSubmit(e)}>
-        <Input type='text' placeholder='Email' ref={(node) => email = node} />
-        <Input type='text' placeholder='Username' ref={(node) => username = node} />
-        <Input type='password' placeholder='Password' ref={(node) => password = node} />
-        <SignupBtn type='submit' value='Sign Up' />
+        <Input
+          type='text'
+          placeholder='Email'
+          ref={(node) => email = node}
+        />
+        <Input
+          type='text'
+          placeholder='Username'
+          ref={(node) => username = node}
+        />
+        <Input
+          type='password'
+          placeholder='Password'
+          ref={(node) => password = node}
+        />
+        <SignupBtn
+          type='submit'
+          value='Sign Up'
+        />
       </Form>
     </Container>
   );
@@ -88,8 +103,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 35%;
-  width: 20%;
+  height: 17rem;
+  width: 15rem;
   border: 1px solid #616161;
   box-shadow: 2px 2px 2px lightgrey;
 `;
@@ -97,7 +112,7 @@ const Container = styled.div`
 const Form = styled.form`
   height: 80%;
   width: 60%;
-  margin-left: 4rem;
+  margin-left: 3rem;
 `;
 
 const Input = styled.input`
@@ -128,7 +143,7 @@ const Header = styled.h3`
   color: #616161;
   font-family: 'Josefin Sans', sans-serif;
   height: 10%;
-  margin-left: 5.3rem;
+  margin-left: 3rem;
   margin-top: 1rem;
 `;
 

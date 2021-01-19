@@ -20,7 +20,6 @@ const ConversationController = {
    Conversation.find({participants : {name: sender} }) //returns an array with all convos matt has 
    .then(allConvosWithSender => {
     
-    
      if (allConvosWithSender.length === 0){ //the sender has no convos with anyone
        Conversation.create({_id: mongoose.Types.ObjectId() , participants: [{name: sender}, {name: recipient}], messages: []})
        .then( (mongoResult) => {
@@ -28,6 +27,7 @@ const ConversationController = {
          res.locals.convoId = mongoResult._id;
          res.locals.status = 200;
          res.locals.messages = mongoResult.messages;
+         console.log('created a convo on line 30')
          return next();
        })
      }
@@ -36,7 +36,7 @@ const ConversationController = {
        
        for (let convoParticipants = 0; convoParticipants < allConvosWithSender[indivConvo].participants.length; convoParticipants ++){
           let currentRecipient = allConvosWithSender[indivConvo].participants[convoParticipants].name 
-          
+          // Save current recipient convo to local
           if (recipient === currentRecipient){
             result = allConvosWithSender[indivConvo];
             res.locals.convoId = result._id
@@ -49,7 +49,7 @@ const ConversationController = {
 
      /*if we make it here, we have iterated thru all of our senders convos, and have not found a conversation
      where the recipient is there. */
-     
+     /* creat conveo */
      Conversation.create({_id: mongoose.Types.ObjectId() ,participants: [{name: sender}, {name: recipient}], messages: []})
      .then( (mongoResult) => {
       res.locals.convoId = mongoResult._id

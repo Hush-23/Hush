@@ -14,36 +14,6 @@ export const initiateConversation = (recipientEmail) => ({
   payload: recipientEmail
 });
 
-export const endConversation = (endConversationPayload) => ({
-  type: types.END_CONVERSATION,
-  payload: endConversationPayload
-});
-
-export const changeConversation = (changeConversationPayload) => ({
-  type: types.CHANGE_CONVERSATION,
-  payload: changeConversationPayload,
-});
-
-export const sendMessage = (sendMessagePayload) => ({
-  type: types.SEND_MESSAGE,
-  payload: sendMessagePayload,
-});
-
-export const deleteMessage = (deleteMessagePayload) => ({
-  type: types.DELETE_MESSAGE,
-  payload: deleteMessagePayload,
-});
-
-export const editMessage = (editMessagePayload) => ({
-  type: types.EDIT_MESSAGE,
-  payload: editMessagePayload,
-});
-
-export const likeMessage = (likeMessagePayload) => ({
-  type: types.LIKE_MESSAGE,
-  payload: likeMessagePayload,
-});
-
 export const login = (userID) => ({
   type: types.LOGIN,
   payload: userID,
@@ -52,10 +22,6 @@ export const login = (userID) => ({
 export const signup = (userID) => ({
   type: types.SIGNUP,
   payload: userID,
-});
-
-export const getUsers = () => ({
-  type: types.GET_USERS,
 });
 
 export const setActiveChat = (messages) => ({
@@ -68,6 +34,16 @@ export const setActiveConversations = (activeConversationPayload) => ({
   payload: activeConversationPayload
 });
 
-export const setActivesLoaded = () => ({
-  type: types.SET_ACTIVES_LOADED,
+export const setClientSocket = (socketPayload) => ({
+  type: types.SET_CLIENT_SOCKET,
+  payload: socketPayload
+});
+
+export const addNewMessage = (messagePayload) => ({
+  type: types.ADD_NEW_MESSAGE,
+  payload: messagePayload
+});
+
+export const logout = () => ({
+  type: types.LOGOUT
 });

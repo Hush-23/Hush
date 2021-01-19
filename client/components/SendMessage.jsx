@@ -1,25 +1,58 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import CryptoJS from "crypto-js";
 
-const SendMessage = (props) => {
+const SendMessage = ({ activeChat, email, activeRecipient, clientSocket, addNewMessage }) => {
+  /**
+Socket Helper Functions
+ */
+
+  const sendDM = (cid, sender, recipient, text) => {
+
+    let date = new Date()
+    let dateInSeconds = Date.parse(date);
+    let directMessage = {};
+
+    //building the message below
+    directMessage['cid'] = cid;
+    directMessage['sender'] = sender;
+    directMessage['recipient'] = recipient;
+    directMessage['text'] = text;
+    directMessage['timestamp'] = dateInSeconds;
+    clientSocket.emit( 'directMessage', JSON.stringify(directMessage));
+  } 
+
+
   let input;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let date = new Date()
+    let dateInSeconds = Date.parse(date);
+    sendDM(activeChat.cid, email, activeRecipient, input.value);
+    const secret = 'tacos';
+    let ciphertext = CryptoJS.AES.encrypt(input.value, secret).toString();
+    addNewMessage({sender: email, recipient: activeRecipient, text: ciphertext, timestamp: dateInSeconds});
+    input.value= '';
+  }
 
   return (
     <Container>
       <Post>
-        <Form onSubmit={(e) => {
-          e.preventDefault();
-          props.dispatch(input.value, new Date().getTime());
-          input.value= '';
-        }}>
-          <Input type='text' placeholder='Send a message to Username...' ref={(node) => input = node} />
-          <Send_Btn onClick={(e) => {
-            
-            props.dispatch(input.value, new Date().getTime());
-            input.value= '';
-          }} >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="24" viewBox="0 0 24 24">
+        <Form onSubmit={(e) => handleSubmit(e)}>
+          <Input 
+            type='text' 
+            placeholder='Send a message to Username...' 
+            ref={(node) => input = node} 
+          />
+          <Send_Btn onClick={(e) => handleSubmit(e)}>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="14" 
+              height="24" 
+              viewBox="0 0 24 24"
+            >
               <path d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z"/>
             </svg>
           </Send_Btn>
@@ -27,10 +60,6 @@ const SendMessage = (props) => {
       </Post>
     </Container>
   );
-};
-
-SendMessage.propTypes = {
-  dispatch: PropTypes.func.isRequired
 };
 
 export default SendMessage;

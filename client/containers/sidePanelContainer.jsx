@@ -1,11 +1,8 @@
 import { connect } from 'react-redux';
 import Sidepanel from '../components/Sidepanel.jsx';
-import { getUsers, initiateConversation, setActiveChat } from '../actions/actions.js';
+import { initiateConversation, setActiveChat } from '../actions/actions.js';
 
 const mapDispatchToProps = dispatch => ({
-  getUsers: () => {
-    dispatch(getUsers());
-  },
   initiateConversation: (email) => {
     dispatch(initiateConversation(email));
   } ,

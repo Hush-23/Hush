@@ -14,20 +14,20 @@ const SearchBar = ({ open, handleClick, activeConversations, setActiveChat, setA
    */
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  
+
   const handleChange = event => {
     setSearchTerm(event.target.value);
   };
 
+  // request chat log info for selected user
   const handleClickUser = (e) => {
-    console.log('event', e.target.innerText);
+    if (activeConversations.includes(e.target.innerText)) return;
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        // "sender" is taken from user state
+        // chat log request requires logged-in user email & recipient email
         sender: email,
-        // recipient taken from activeConversations email property === e.target.email
         recipient: e.target.innerText
       })
     };
@@ -36,14 +36,17 @@ const SearchBar = ({ open, handleClick, activeConversations, setActiveChat, setA
      * immediately invoked Async function
      * makes request to server for conversation object using username
      */
-
+    
     try {
       (async () => {
         const request = await fetch('/chat/convo', requestOptions);
         const response = await request.json();
+
+        // setActiveConversations updates list of active conversations with user selected from search box
         setActiveConversations([...activeConversations, e.target.innerText]);
-        setActiveChat(response);
-        
+
+        // setActiveChat action updates state with currently selected user chat log
+        setActiveChat({ response: response, recipient: e.target.innerText });
       })();
     } catch (err) {
       console.log(err);
@@ -59,8 +62,9 @@ const SearchBar = ({ open, handleClick, activeConversations, setActiveChat, setA
   useEffect(() => {
     // Define fetch request options
     const requestOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: email })
     };
 
     /**
@@ -75,8 +79,14 @@ const SearchBar = ({ open, handleClick, activeConversations, setActiveChat, setA
         const response = await request.json();
         users = await response.users;
         // filter out users that appear in activeConversations
-        users =  await users.filter((user) => !activeConversations.includes(user));
-        const results = users.filter(user =>  user.toLowerCase().includes(searchTerm));
+        console.log('users', users);
+        console.log('activeConversations', activeConversations);
+        users = users.filter((user) => {
+          if (!activeConversations.includes(user)) {
+            return user;
+          }
+        });
+        const results = users.filter(user => user.toLowerCase().includes(searchTerm));
         setSearchResults(results);
       })();
     } catch (err) {
@@ -86,9 +96,9 @@ const SearchBar = ({ open, handleClick, activeConversations, setActiveChat, setA
 
   return (
     <Container onClick={(e) => handleClick(e)}>
-      <Input 
+      <Input
         id='input'
-        type='text' 
+        type='text'
         placeholder='Search users...'
         value={searchTerm}
         onChange={handleChange}
@@ -96,8 +106,14 @@ const SearchBar = ({ open, handleClick, activeConversations, setActiveChat, setA
       />
       <Results open={open} >
         <ul>
-          {searchResults.map(item => (
-            <User email={item} onClick={(e) => handleClickUser(e)}>{item}</User>
+          {searchResults.map((item, i) => (
+            <User
+              key={`${item}${i}`}
+              email={item}
+              onClick={(e) => handleClickUser(e)}
+            >
+              {item}
+            </User>
           ))}
         </ul>
       </Results>

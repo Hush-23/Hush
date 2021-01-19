@@ -5,7 +5,7 @@ import styled from 'styled-components';
  * Renders active conversations to sidepanel
  */
 
-const Conversations = ({ activesLoaded, setActivesLoaded, setActiveChat, activeConversations, setActiveConversations, email }) => {
+const Conversations = ({ setActiveChat, activeConversations, setActiveConversations, email }) => {
 
   /**
    * Set state
@@ -13,27 +13,39 @@ const Conversations = ({ activesLoaded, setActivesLoaded, setActiveChat, activeC
    * groupOpen  determines whether to expand or hide active group messages - passed as prop to styled component and changes display based on value
    */
   const [directOpen, setDirectOpen] = useState(true);
-  const [groupOpen, setGroupOpen] = useState(true);
-
+  const [groupOpen, setGroupOpen] = useState(false);
+  const [conversationSelected, setConversationSelected] = useState(false);
 
 
 
   // Make request for all active conversations
-  // pass active email to messages component
+
   useEffect(() => {
     (async () => {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email})
+        body: JSON.stringify({ username: email })
       };
 
       try {
         const request = await fetch('/chat/userconvos', requestOptions);
         const response = await request.json();
+
+        // update list of users who have an active conversation with logged-in user
+
         setActiveConversations(
           response.conversations.map(convo => {
-            const temp = convo.participants.filter(user => user.name !== email);
+
+            // conversation list query returns both users attached to a conversation
+            // filter out user name of logged in user to display only recipient email
+            const noDuplicatesArr = [];
+            const temp = convo.participants.filter(user => {
+              if (user.name !== email && !noDuplicatesArr.includes(user.name)) {
+                noDuplicatesArr.push(user.name);
+                return user.name;
+              }
+            });
             return temp[0].name;
           })
         );
@@ -44,26 +56,27 @@ const Conversations = ({ activesLoaded, setActivesLoaded, setActiveChat, activeC
   }, []);
 
   // handles click of direct caret
+
   const handleDirectClick = (e) => {
     if (directOpen) setDirectOpen(false);
     else setDirectOpen(true);
   };
 
   // handles click of group caret
+
   const handleGroupClick = (e) => {
     if (groupOpen) setGroupOpen(false);
     else setGroupOpen(true);
   };
 
-  // 
+  // request chat log info for selected user
+
   const handleUserClick = (e) => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        // "sender" is taken from user state
         sender: email,
-        // recipient taken from activeConversations email property === e.target.email
         recipient: e.target.innerText
       })
     };
@@ -77,27 +90,46 @@ const Conversations = ({ activesLoaded, setActivesLoaded, setActiveChat, activeC
       (async () => {
         const request = await fetch('/chat/convo', requestOptions);
         const response = await request.json();
-        setActiveChat(response);
+        console.log
+        // setActiveChat action updates state with currently selected user chat log
+        setActiveChat({ response: response, recipient: e.target.innerText });
       })();
     } catch (err) {
       console.log(err);
     }
   };
 
-  let actives;
-
   return (
     <Container>
       <Header>Conversations</Header>
       <Ul>
-        <li><DirectCaret onClick={(e) => handleDirectClick(e)} open={directOpen} >Direct</DirectCaret>
+        <li>
+          <DirectCaret
+            onClick={(e) => handleDirectClick(e)}
+            open={directOpen}
+          >
+            Direct
+          </DirectCaret>
           <InnerList open={directOpen} >
             {activeConversations.map((user, i) => (
-              <Direct key={`${user}${i}`} email={user} onClick={(e) => handleUserClick(e)}>{user}</Direct>
+              <Direct
+                key={`${user}${i}`}
+                email={user}
+                onClick={(e) => handleUserClick(e)}
+              >
+                {user}
+              </Direct>
             ))}
           </InnerList>
         </li>
-        <li><GroupCaret onClick={(e) => handleGroupClick(e)} open={groupOpen} >Groups</GroupCaret></li>
+        <li>
+          <GroupCaret
+            onClick={(e) => handleGroupClick(e)}
+            open={groupOpen}
+          >
+            Groups
+          </GroupCaret>
+        </li>
         <InnerList open={groupOpen} >
           <Group>Ian, Ross & Wei</Group>
         </InnerList>
@@ -113,7 +145,7 @@ export default Conversations;
  */
 const Container = styled.div`
   height: 65%;
-  margin-top: -4rem;
+  margin-top: -1rem;
   z-index: 2;
   font-family: 'Josefin Sans', sans-serif;
   overflow: hidden;
@@ -146,6 +178,7 @@ const GroupCaret = styled(DirectCaret)`
 `;
 
 const Direct = styled.li`
+  
   text-indent: 1rem;
   padding: .5rem;
   margin-left: 1rem;
