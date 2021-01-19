@@ -10,7 +10,7 @@ userRouter.post('/create',
   });
 
 
-userRouter.get('/getUsers',
+userRouter.post('/getUsers',
   userController.getUsers,
   (req, res) => {
     res.status(res.locals.status).json({users: res.locals.users});

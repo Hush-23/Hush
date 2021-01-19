@@ -6,13 +6,17 @@ const initialState = {
   username: '',
   loggedIn: false,
   email: '',
+  activeRecipient: '',
   activeChat: {cid: '', conversation: []},
   activeConversations: [],
-  activesLoaded: false
+  activesLoaded: false,
+  clientSocket: {}
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+  
+  // change user state loggedIn to true
   case types.LOGIN: {  
     return {
       ...state,
@@ -21,6 +25,7 @@ const userReducer = (state = initialState, action) => {
     };
   }
 
+  // change user state loggedIn to true
   case types.SIGNUP: {
     return {
       ...state,
@@ -29,38 +34,39 @@ const userReducer = (state = initialState, action) => {
     };
   }
 
-  case types.GET_USERS: {
-    // fetch '/user/getusers' response should look similar to userServerResponse
-    // console.log(action.payload);
-    const userServerResponse = { users: [{name: 'Waye', email: 'weimpromptu@gmail.com'}, {name: 'Ian', email: 'ian.michael.garrett@gmail.com'}, {name: 'Matt', email: 'mattagreenberg1@gmail.com'}, {name: 'Ross', email: 'rrsarcona@gmail.com'}] };
-    const userList = userServerResponse.users;
-    return {
-      ...state,
-      userList,
-    };
+  case types.LOGOUT: {
+      return {
+        ...state,
+        loggedIn: false
+      }
   }
 
+  // updates user list in state
   case types.INITIATE_CONVERSATION: {
-    // send curUserEmail & action.payload (recipientEmail) to server route '/chat'
     const convServerResponse = {convId: '1', messages: []};
     const userList = [...state.userList];
-    // console.log(action, userList);
     return {
       ...state,
       userList,
     };
   }
 
+  // set the active chat messages and active recipient in state
   case types.SET_ACTIVE_CHAT: {
+  
     // action payload is an object of {cID, [users], [messages]}
-    const activeChat = action.payload;
-    // console.log('user reducer payload:', action.payload);
+
+    const activeChat = action.payload.response;
+    const activeRecipient = action.payload.recipient;
+    console.log(activeRecipient);
     return {
       ...state,
       activeChat,
+      activeRecipient
     };
   }
 
+  // adds new conversation to active conversations
   case types.SET_ACTIVE_CONVERSATIONS: {
     return {
       ...state,
@@ -68,12 +74,30 @@ const userReducer = (state = initialState, action) => {
     };
   }
 
-  case types.SET_ACTIVES_LOADED: {
+  // Stores the current users socket in state
+  case types.SET_CLIENT_SOCKET: {
+    // console.log('clientsocket payload', action.payload);
     return {
       ...state,
-      activesLoaded: true,
+      clientSocket: action.payload
     };
   }
+
+  // Add new message on client side
+  case types.ADD_NEW_MESSAGE: {
+    console.log(state.activeChat);
+    const conversation = [...state.activeChat.conversation]
+    conversation.push(action.payload);
+    const cidCopy = state.activeChat.cid;
+    return {
+      ...state,
+      activeChat: {
+        cid: cidCopy,
+        'conversation': conversation
+      }
+    };
+  }
+
   default:
     return state;
   }

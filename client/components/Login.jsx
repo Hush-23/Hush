@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Signup from './Signup.jsx';
+import socketIOClient from 'socket.io-client';
 
 /**
  * 
@@ -10,7 +11,38 @@ import Signup from './Signup.jsx';
  * reroutes to dashboard component on authentication of user
  */
 
-const Login = ({ login, signup, history }) => {
+const Login = ({ login, signup, history, setClientSocket, addNewMessage, activeRecipient }) => {
+
+  /**
+   * Socket handler functions
+   * invoked below on successfull login
+   */
+
+  let clientSocket;
+
+  // initial socket connection
+  const connectToSocket = () => {
+    clientSocket = io.connect();
+    setClientSocket(clientSocket);
+    clientSocket.emit('connected', 'INITIAL CONNECTION !!@!@!@!!!@!@!@!@!@');
+  };
+
+  // add user to 'phonebook' in websocket server
+  const defineMe = (username) => {
+    clientSocket.emit('defineClient', `{"username":"${username}" }`);
+  };
+
+  // listen for any requests to users websocket
+  const listenForMessage = () => {
+    clientSocket.on('outGoingDM', (incomingMessage) => {
+      let incomingMessageObj = JSON.parse(incomingMessage);
+      console.log('sender:', incomingMessageObj.sender, 'activeRecipient:', activeRecipient);
+      // if (incomingMessageObj.sender === activeRecipient) addNewMessage(incomingMessageObj);
+      //up to front end how they want to render that message ...
+      addNewMessage(incomingMessageObj);
+    })
+  };
+
 
   /**
    * Set state 
@@ -26,6 +58,7 @@ const Login = ({ login, signup, history }) => {
 
   // handles click to open & close signup container/login container 
   // state values are passed into styled-component as prop and display is rendered based on value
+
   const handleSignup = (e) => {
     if (openSignup) {
       setOpenSignup(false);
@@ -40,11 +73,11 @@ const Login = ({ login, signup, history }) => {
   // handle submission of login form
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Define fetch request options
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: email.value, password: password.value })
     };
 
@@ -60,6 +93,11 @@ const Login = ({ login, signup, history }) => {
      * server verifies user information in db & returns status code
      * if successfull logs user in and reroutes to dashboard page
      * if fails displays error message on login form
+     * 
+     * 
+     * makes initial connection to socket
+     * adds user socket to 'phonebook' on websocket server
+     * invokes function to listen for requests to the users socket
      */
 
     (async () => {
@@ -72,6 +110,9 @@ const Login = ({ login, signup, history }) => {
           // Set state in redux store to logged in
           console.log(email.value);
           login(email.value);
+          connectToSocket();
+          defineMe(email.value);
+          listenForMessage();
           history.push('/dashboard');
         } else {
           setErrorMessage(errorMessages[status.toString()]);
@@ -82,7 +123,7 @@ const Login = ({ login, signup, history }) => {
         console.log(err);
       }
     })();
-    
+
   };
 
   // variables where input values are held
@@ -109,6 +150,8 @@ const Login = ({ login, signup, history }) => {
 
 export default Login;
 
+
+
 /**
  * Styled Components
  */
@@ -124,8 +167,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 35%;
-  width: 20%;
+  height: 17rem;
+  width: 15rem;
   border: 1px solid #616161;
   box-shadow: 2px 2px 2px lightgrey;
 `;

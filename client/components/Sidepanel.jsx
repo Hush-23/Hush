@@ -25,9 +25,23 @@ const Sidepanel = ({ activesLoaded, setActivesLoaded, email, setActiveChat, setA
 
   return (
     <Container onClick={handleClick}>
-      <UserDetails />
-      <SearchBar open={open} handleClick={handleClick} setActiveChat={setActiveChat} setActiveConversations={setActiveConversations} activeConversations={activeConversations} email={email} />
-      <Conversations email={email} activesLoaded={activesLoaded} setActivesLoaded={setActivesLoaded} setActiveChat={setActiveChat} setActiveConversations={setActiveConversations} activeConversations={activeConversations} />
+      <UserDetails email={email} />
+      <SearchBar 
+        open={open} 
+        handleClick={handleClick} 
+        setActiveChat={setActiveChat} 
+        setActiveConversations={setActiveConversations} 
+        activeConversations={activeConversations} 
+        email={email} 
+      />
+      <Conversations 
+        email={email} 
+        activesLoaded={activesLoaded} 
+        setActivesLoaded={setActivesLoaded} 
+        setActiveChat={setActiveChat} 
+        setActiveConversations={setActiveConversations} 
+        activeConversations={activeConversations} 
+      />
     </Container>
   );
 };
@@ -41,7 +55,8 @@ export default Sidepanel;
 const Container = styled.div`
   border-right: 1px solid black;
   height: 100%;
-  width: 15%;
+  min-width: 15rem;
+  max-width: 15rem;
   box-shadow: 1px 1px 1px darkgrey;
   background-color: #fcfcfc;
 `;

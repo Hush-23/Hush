@@ -6,11 +6,11 @@ import styled from 'styled-components';
  * avatar & username
  */
 
-const UserDetails = (props) => {
+const UserDetails = ({ email }) => {
   return (
     <Container>
       <Avatar />
-      <User>username</User>
+      <User>{email}</User>
     </Container>
   );
 };
@@ -32,7 +32,7 @@ const Avatar = styled.div`
   height: 3rem;
   width: 3rem;
   border-radius: 100%;
-  background-color: lightgrey;
+  background-color: #f2f0f0;
   margin-left: 1rem;
 `;
 
