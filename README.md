@@ -8,3 +8,4 @@ Encrypted p2p chat.
 * Express
 * Node
 * MongoDB
+* Webpack
